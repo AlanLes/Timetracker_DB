@@ -7,7 +7,7 @@ from django.utils import timezone
 # model kalendarz, pk - id generuje sie automatycznie, wiec data nie jest pk
 class Kalendarz(models.Model):
     data = models.DateField(default=timezone.now)
-    czy_pracujacy = models.BooleanField
+    czy_pracujacy = models.BooleanField(initial=True)
     uwagi = models.CharField(max_length=200)
 
     def __str__(self):
@@ -39,7 +39,7 @@ class Pracownik(models.Model):
     imie = models.CharField(max_length=20)
     nazwisko = models.CharField(max_length=30)
     stanowisko = models.CharField(max_length=20)
-    email = models.CharField(max_length=20)
+    email = models.EmailField()
     haslo = models.CharField(max_length=30)
 
     def __str__(self):
