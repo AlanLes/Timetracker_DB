@@ -34,14 +34,6 @@ class CzasPracy(models.Model):
         return 'Laczny czas pracy: ' + self.calkowity_czas_pracy
 
 
-class Urlop(models.Model):
-    pracownik_id = models.ForeignKey(Pracownik)
-    typ_urlopu = models.CharField(max_length=30)
-
-    def __str__(self):
-        return 'Urlop typu ' + self.typ_urlopu+ ' pracownika o id: ' + self.pracownik_id
-
-
 class Pracownik(models.Model):
     przelozony_id = models.ForeignKey('self')
     imie = models.CharField(max_length=20)
@@ -63,6 +55,13 @@ class Pracownik(models.Model):
             return False
     # to do: write some imie and nazwisko validators.
 
+
+class Urlop(models.Model):
+    pracownik_id = models.ForeignKey(Pracownik)
+    typ_urlopu = models.CharField(max_length=30)
+
+    def __str__(self):
+        return 'Urlop typu ' + self.typ_urlopu+ ' pracownika o id: ' + self.pracownik_id
 
 
 class DzienPracownika(models.Model):
