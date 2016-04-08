@@ -8,7 +8,7 @@ from django.utils import timezone
 class Kalendarz(models.Model):
     data = models.DateField(default=timezone.now, null=False)
     czy_pracujacy = models.BooleanField(default=True, null=False)
-    uwagi = models.CharField(max_length=200, null=True)
+    uwagi = models.CharField(max_length=200, null=True, blank=True)
 
     def __str__(self):
         return 'Data: ' + self.data
@@ -16,8 +16,8 @@ class Kalendarz(models.Model):
 
 class Przerwa(models.Model):
     start_przerwy = models.TimeField(null=False)
-    koniec_przerwy = models.TimeField(null=True)
-    calkowity_czas_przerwy = models.DurationField(null=True)
+    koniec_przerwy = models.TimeField(null=True, blank=True)
+    calkowity_czas_przerwy = models.DurationField(null=True, blank=True)
 
     def __str__(self):
         return 'Laczny czas przerwy' + self.calkowity_czas_przerwy
@@ -26,16 +26,16 @@ class Przerwa(models.Model):
 class CzasPracy(models.Model):
     kalendarz_id = models.ForeignKey(Kalendarz, null=False)
     czas_przyjscia = models.TimeField(null=False)
-    czas_wyjscia = models.TimeField(null=True)
-    przerwa_id = models.ForeignKey(Przerwa, null=True)
-    calkowity_czas_pracy = models.DurationField(null=True)
+    czas_wyjscia = models.TimeField(null=True, blank=True)
+    przerwa_id = models.ForeignKey(Przerwa, null=True, blank=True)
+    calkowity_czas_pracy = models.DurationField(null=True, blank=True)
 
     def __str__(self):
         return 'Laczny czas pracy: ' + self.calkowity_czas_pracy
 
 
 class Pracownik(models.Model):
-    przelozony_id = models.ForeignKey('self', null=True)
+    przelozony_id = models.ForeignKey('self', null=True, blank=True)
     imie = models.CharField(max_length=20, null=False)
     nazwisko = models.CharField(max_length=30, null=False)
     stanowisko = models.CharField(max_length=20, null=False)
