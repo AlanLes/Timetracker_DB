@@ -29,9 +29,9 @@ class Przerwa(models.Model):
 
 class CzasPracy(models.Model):
     kalendarz_id = models.ForeignKey(Kalendarz, null=False)
+    przerwa_id = models.ForeignKey(Przerwa, null=True, blank=True)
     czas_przyjscia = models.TimeField(null=False)
     czas_wyjscia = models.TimeField(null=True, blank=True)
-    przerwa_id = models.ForeignKey(Przerwa, null=True, blank=True)
     calkowity_czas_pracy = models.DurationField(null=True, blank=True)
 
     def __str__(self):
@@ -57,7 +57,6 @@ class Pracownik(models.Model):
 
 
 class Urlop(models.Model):
-    pracownik_id = models.ForeignKey(Pracownik, null=False)
     typ_urlopu = models.CharField(max_length=30, null=False)
 
     def __str__(self):
