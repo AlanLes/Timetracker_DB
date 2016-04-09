@@ -61,7 +61,7 @@ class Urlop(models.Model):
     typ_urlopu = models.CharField(max_length=30, null=False)
 
     def __str__(self):
-        return 'Urlop typu ' + self.typ_urlopu+ ' pracownika o id: ' + self.pracownik_id
+        return 'Urlop typu ' + self.typ_urlopu
 
 
 class DzienPracownika(models.Model):
