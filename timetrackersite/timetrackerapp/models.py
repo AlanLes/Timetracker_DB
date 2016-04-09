@@ -11,7 +11,7 @@ class Kalendarz(models.Model):
     uwagi = models.CharField(max_length=200, null=True, blank=True)
 
     def __str__(self):
-        return 'Data: ' + self.data
+        return 'Data: ' + str(self.data)
 
 
 class Przerwa(models.Model):
@@ -20,7 +20,11 @@ class Przerwa(models.Model):
     calkowity_czas_przerwy = models.DurationField(null=True, blank=True)
 
     def __str__(self):
-        return 'Laczny czas przerwy' + self.calkowity_czas_przerwy
+        return 'Start przerwy o: ' + str(self.start_przerwy)
+
+    def calculate_total_break_time(self):
+        self.calkowity_czas_przerwy = self.start_przerwy - self.koniec_przerwy
+        return self.calkowity_czas_przerwy
 
 
 class CzasPracy(models.Model):
@@ -31,7 +35,11 @@ class CzasPracy(models.Model):
     calkowity_czas_pracy = models.DurationField(null=True, blank=True)
 
     def __str__(self):
-        return 'Laczny czas pracy: ' + self.calkowity_czas_pracy
+        return 'Start pracy o: ' + str(self.czas_przyjscia)
+
+    def calculate_total_work_time(self):
+        self.calkowity_czas_pracy = self.czas_przyjscia - self.czas_wyjscia
+        return self.calkowity_czas_pracy
 
 
 class Pracownik(models.Model):
@@ -58,5 +66,8 @@ class Urlop(models.Model):
 
 class DzienPracownika(models.Model):
     czas_pracy_id = models.ForeignKey(CzasPracy, null=False)
-    urlop_id = models.ForeignKey(Urlop, null=False)
+    urlop_id = models.ForeignKey(Urlop, null=True, blank=True)
     pracownik_id = models.ForeignKey(Pracownik, null=False)
+
+    def __str__(self):
+        return 'Dzien pracownika.'

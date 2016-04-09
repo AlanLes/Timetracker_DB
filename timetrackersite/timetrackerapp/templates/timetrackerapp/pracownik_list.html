@@ -1,0 +1,16 @@
+{#{% extends "base.html" %}#}
+
+{% block content %}
+    <h2>Pracownicy</h2>
+    <ul>
+        {% for Pracownik in object_list %}
+            <li>
+                id: {{ Pracownik.id }}
+                {{ Pracownik.imie }} {{ Pracownik.nazwisko }}
+                <br/>stanowisko: {{ Pracownik.stanowisko }}
+                <br/>email: {{ Pracownik.email }}
+            </li>
+            <br/>
+        {% endfor %}
+    </ul>
+{% endblock %}
