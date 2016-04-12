@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_extensions',
     'debug_toolbar',
+    'bootstrap3',
     'timetrackerapp',
 ]
 
@@ -116,6 +117,8 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+AUTH_PROFILE_MODULE = 'timetrackerapp.Pracownik'
 
 
 # Static files (CSS, JavaScript, Images)

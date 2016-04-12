@@ -1,8 +1,9 @@
 from __future__ import unicode_literals
-
 from django.db import models
 from django.utils import timezone
-# from datetime import timedelta
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+
 
 # model kalendarz, pk - id generuje sie automatycznie, wiec data nie jest pk
 class Kalendarz(models.Model):
@@ -43,17 +44,20 @@ class CzasPracy(models.Model):
 
 
 class Pracownik(models.Model):
-    przelozony_id = models.ForeignKey('self', null=True, blank=True)
-    imie = models.CharField(max_length=20, null=False)
-    nazwisko = models.CharField(max_length=30, null=False)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    przelozony_id = models.ForeignKey('Pracownik', null=True, blank=True)
     stanowisko = models.CharField(max_length=20, null=False)
-    email = models.EmailField(null=False)
-    haslo = models.CharField(max_length=30, null=False)
 
     def __str__(self):
-        return 'Pracownik ' + self.imie + ' ' + self.nazwisko + ' zajmujacy stanowisko ' + self.stanowisko
-
+        return "%s's profile" % self.user
     # to do: write some imie and nazwisko validators.
+
+
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+       profile, created = Pracownik.objects.get_or_create(user=instance)
+
+post_save.connect(create_user_profile, sender=User)
 
 
 class Urlop(models.Model):

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{ object.user.first_name }}</h1>
+    <h1>{{ object.user.last_name}}</h1>
+    <p>{{ object.user.username}}</p>
+
+
+                {# to do #}
+<div>
+    <button id="start-work-day" type="button" class="btn btn-primary btn-lg">PRZYJŚCIE DO PRACY</button>
+
+    <button type="button" class="btn btn-primary btn-lg">PRZERWA START</button>
+
+    <button type="button" class="btn btn-primary btn-lg">KONIEC PRZERWY</button>
+
+    <button type="button" class="btn btn-primary btn-lg">KONIEC PRACY</button>
+</div>
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#start-work-day').click(function(){
+            console.log("dziala");
+                var jqxhr = $.get( "/timetrackerapp/pracownicy/1/start-work/", function(response) {
+                  alert(response);
+                });
+            });
+        });
+    </script>
+{% endblock %}
