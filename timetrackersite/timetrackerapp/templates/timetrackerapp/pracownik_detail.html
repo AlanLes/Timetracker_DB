@@ -22,7 +22,7 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('#start-work-day').click(function(){
-            console.log("dziala");
+                console.log("dziala");
                 var jqxhr = $.get( "/timetrackerapp/pracownicy/1/start-work/", function(response) {
                   alert(response);
                 });

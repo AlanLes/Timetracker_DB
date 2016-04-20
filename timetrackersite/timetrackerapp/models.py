@@ -5,16 +5,6 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 
 
-# model kalendarz, pk - id generuje sie automatycznie, wiec data nie jest pk
-class Kalendarz(models.Model):
-    data = models.DateField(default=timezone.now, null=False)
-    czy_pracujacy = models.BooleanField(default=True, null=False)
-    uwagi = models.CharField(max_length=200, null=True, blank=True)
-
-    def __str__(self):
-        return 'Data: ' + str(self.data)
-
-
 class Przerwa(models.Model):
     start_przerwy = models.TimeField(null=False)
     koniec_przerwy = models.TimeField(null=True, blank=True)
@@ -29,7 +19,7 @@ class Przerwa(models.Model):
 
 
 class CzasPracy(models.Model):
-    kalendarz_id = models.ForeignKey(Kalendarz, null=False)
+    data = models.DateField(default=timezone.now, null=False)
     przerwa_id = models.ForeignKey(Przerwa, null=True, blank=True)
     czas_przyjscia = models.TimeField(null=False)
     czas_wyjscia = models.TimeField(null=True, blank=True)
@@ -51,6 +41,9 @@ class Pracownik(models.Model):
     def __str__(self):
         return "%s's profile" % self.user
     # to do: write some imie and nazwisko validators.
+
+    def is_kierownik(self):
+        return self.stanowisko == 'kierownik'
 
 
 def create_user_profile(sender, instance, created, **kwargs):

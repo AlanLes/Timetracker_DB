@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+    TEMPLATE
+
+    {% if user.pracownik.is_kierownik %}
+        kierownik
+    {% else %}
+        niekierownik
+    {% endif %}
+    <div class="row">
+        <button id="start-work-day1" type="button" class="btn btn-default btn-lg">PRZYJŚCIE DO PRACY</button>
+
+        <button type="button" class="btn btn-success btn-lg">PRZERWA START</button>
+
+        <button type="button" class="btn btn-danger btn-lg">KONIEC PRZERWY</button>
+
+        <button type="button" class="btn btn-primary btn-lg">KONIEC PRACY</button>
+    </div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#start-work-day1').click(function(){
+        console.log("dziala");
+            var jqxhr = $.get("/timetrackerapp/start-work/", function(response) {
+              alert(response);
+            });
+        });
+    });
+</script>
+
+{% endblock %}
