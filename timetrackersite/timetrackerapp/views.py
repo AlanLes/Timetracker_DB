@@ -30,7 +30,7 @@ class PracownikDetailView(LoginRequiredMixin, DetailView):
 
 
 def start_work(request, **kwargs):
-    todayWorkTime = CzasPracy()
+    todayWorkTime = CzasPracy(czas_przyjscia=timezone.now(), )
     todayWorkTime.save()
 
 
