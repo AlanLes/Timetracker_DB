@@ -9,24 +9,51 @@
         niekierownik
     {% endif %}
     <div class="row">
-        <button id="start-work-day1" type="button" class="btn btn-default btn-lg">PRZYJŚCIE DO PRACY</button>
+        <button id="start-work-day" type="button" class="btn btn-info btn-lg">
+            PRZYJŚCIE DO PRACY
+        </button>
 
-        <button type="button" class="btn btn-success btn-lg">PRZERWA START</button>
+        <button id="start-break" type="button" class="btn btn-success btn-lg">
+            PRZERWA START
+        </button>
 
-        <button type="button" class="btn btn-danger btn-lg">KONIEC PRZERWY</button>
+        <button id="end-break" type="button" class="btn btn-warning btn-lg">
+            KONIEC PRZERWY
+        </button>
 
-        <button type="button" class="btn btn-primary btn-lg">KONIEC PRACY</button>
+        <button id="end-work-day" type="button" class="btn btn-danger btn-lg">
+            KONIEC PRACY
+        </button>
     </div>
 
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#start-work-day1').click(function(){
+        $('#start-work-day').click(function(){
         console.log("dziala");
             var jqxhr = $.get("/timetrackerapp/start-work/", function(response) {
               alert(response);
             });
         });
     });
+
+    $(document).ready(function() {
+        $('#start-break').click(function(){
+            console.log("dziala");
+            var jqxhr = $.get("/timetrackerapp/start-break/", function(response) {
+              alert(response);
+            });
+        });
+    });
+
+    $(document).ready(function() {
+        $('#end-break').click(function(){
+            console.log("dziala");
+            var jqxhr = $.get("/timetrackerapp/end-break/", function(response) {
+              alert(response);
+            });
+        });
+    });
+
 </script>
 
 {% endblock %}
