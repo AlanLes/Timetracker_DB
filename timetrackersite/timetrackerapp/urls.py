@@ -11,5 +11,5 @@ urlpatterns = [
     url(r'^start-work/$', start_work),
     url(r'^start-break/$', start_break),
     url(r'^end-break/$', end_break),
-    # url(r'^start-break/$', start_break),
+    url(r'^end-work/$', end_work),
 ]
