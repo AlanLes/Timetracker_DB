@@ -8,8 +8,10 @@ import datetime
 import time
 
 
-def timedelta_to_string(timedel):
-    return time.strftime('%H:%M:%S', time.gmtime(timedel.seconds))
+def timedelta_to_text(timedel):
+    tmp = timedel
+    return time.strftime('%H:%M:%S', time.gmtime(tmp))
+
 
 class Pracownik(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -19,44 +21,51 @@ class Pracownik(models.Model):
     def __str__(self):
         return "%s's profile" % self.user
 
-    # to do:
-    # te metody ktore tu masz z czasem przerobic tak, zeby bpodejmowaly parametr daty, zeby byly uniwersalne
-    # to znaczy w sumie tylko ta jedna metoda - laczny_czas_pracy, bo bedzie potrzebna do wyswietlania dla userow potem
-    # no i jeszcze zrobic taka metode, ktora bedzie: laczny_czas_pracy_dzisiaj, ktora bedzie wywolywala tamta metode,
-    # ale z dzisiejsza data. 
-
     def is_kierownik(self):
         return self.stanowisko == 'kierownik'
 
-    def laczny_czas_przerw(self):
-        laczny_przerw = timedelta(milliseconds=0)
-        for konkretny_log in self.przerwa_set.filter(start_przerwy__date=datetime.datetime.today()):
-            if konkretny_log.koniec_przerwy:
-                laczny_przerw += (konkretny_log.koniec_przerwy - konkretny_log.start_przerwy)
-        return time.strftime('%H:%M:%S', time.gmtime(laczny_przerw.seconds))
-
-    def laczny_czas_pracy(self):
-        laczny_pracy = timedelta(milliseconds=0)
-        for konkretny_log in self.czaspracy_set.filter(czas_przyjscia__date=datetime.datetime.today()):
-            if konkretny_log.czas_wyjscia:
-                laczny_pracy += (konkretny_log.czas_wyjscia - konkretny_log.czas_przyjscia)
-        return time.strftime('%H:%M:%S', time.gmtime(laczny_pracy.seconds))
-
-    def czas_pracy_bez_przerw(self):
-        laczny_przerw = timedelta(milliseconds=0)
-        for konkretny_log in self.przerwa_set.filter(start_przerwy__date=datetime.datetime.today()):
-            if konkretny_log.koniec_przerwy:
-                laczny_przerw += (konkretny_log.koniec_przerwy - konkretny_log.start_przerwy)
-        laczny_pracy = timedelta(milliseconds=0)
-        for konkretny_log in self.czaspracy_set.filter(czas_przyjscia__date=datetime.datetime.today()):
-            if konkretny_log.czas_wyjscia:
-                laczny_pracy += (konkretny_log.czas_wyjscia - konkretny_log.czas_przyjscia)
-        czas_bez_przerw = laczny_pracy - laczny_przerw
-        return time.strftime('%H:%M:%S', time.gmtime(czas_bez_przerw.seconds))
-
-
-    def lista_pracownikow (self):
+    def lista_pracownikow(self):
         return Pracownik.objects.filter(przelozony_id=self)
+
+    ### PRZERWY
+    def laczny_czas_przerw(self, date):
+        laczny_przerw = timedelta(milliseconds=0)
+        for konkretny_log in self.przerwa_set.filter(start_przerwy__date=date):
+            if konkretny_log.koniec_przerwy:
+                laczny_przerw += (konkretny_log.koniec_przerwy - konkretny_log.start_przerwy)
+        return laczny_przerw.seconds
+
+    def laczny_czas_przerw_dzis(self):
+        dzis = datetime.datetime.today()
+        return self.laczny_czas_przerw(dzis)
+
+    def t_laczny_czas_przerw(self, date):
+        tmp = self.laczny_czas_przerw(date)
+        return timedelta_to_text(tmp)
+
+    def t_laczny_czas_przerw_dzis(self):
+        tmp = self.laczny_czas_przerw_dzis()
+        return timedelta_to_text(tmp)
+
+    ### CZAS PRACY
+    def laczny_czas_pracy(self, date):
+        laczny_pracy = timedelta(milliseconds=0)
+        for konkretny_log in self.czaspracy_set.filter(czas_przyjscia__date=date):
+            if konkretny_log.czas_wyjscia:
+                laczny_pracy += (konkretny_log.czas_wyjscia - konkretny_log.czas_przyjscia)
+        return laczny_pracy.seconds
+
+    def laczny_czas_pracy_dzis(self):
+        dzis = datetime.datetime.today()
+        return self.laczny_czas_pracy(dzis)
+
+    def t_laczny_czas_pracy(self, date):
+        tmp = self.laczny_czas_pracy(date)
+        return timedelta_to_text(tmp)
+
+    def t_laczny_czas_pracy_dzis(self):
+        tmp = self.laczny_czas_pracy_dzis()
+        return timedelta_to_text(tmp)
 
     def status(self):
         zwrot_statusu = ''
@@ -81,10 +90,7 @@ class Pracownik(models.Model):
         log_dnia = {'data': '', 'laczny_czas': ''}
         for konkretny_log in self.czaspracy_set.filter(czas_przyjscia__month=datetime.datetime.now().month):
             return ''
-
         return log_miesiaca
-
-
 
 
 class CzasPracy(models.Model):

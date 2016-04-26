@@ -20,6 +20,7 @@ from django.views.generic.base import RedirectView
 urlpatterns = [
     url(r'^timetrackerapp/', include('timetrackerapp.urls')),
     url(r'^admin/', admin.site.urls),
+    url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
     url(r'^accounts/', include('django.contrib.auth.urls')),
     url(r'^$', RedirectView.as_view(url="/timetrackerapp/", permanent=True), name='index'),
 ]

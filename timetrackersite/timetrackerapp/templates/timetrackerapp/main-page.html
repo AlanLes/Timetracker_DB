@@ -1,11 +1,9 @@
 {% extends "base.html" %}
+{% load show_month_tags %}
 
 {% block content %}
-    <h3>{{ user.first_name }} {{ user.last_name }}</h3>
-    <h4>stanowisko: {{ user.pracownik.stanowisko }}</h4>
-    <h4>status: {{ user.pracownik.status }}</h4>
 
-    <div class="row" style="text-align: center">
+    <div class="row" style="text-align: center; margin-top: 50px;">
         <div class="col-xs-3">
             <button id="start-work-day" type="button" class="btn btn-info btn-lg" onClick="refreshPage()">
                 PRZYJŚCIE DO PRACY
@@ -27,14 +25,7 @@
             </button>
         </div>
     </div>
-    <div class="row" style="text-align: center">
-        <div class="col-xs-3 pull-right">
-            <a href="/accounts/logout">
-                <button class="btn btn-default" style="background-color: black; color: white">WYLOGUJ</button>
-            </a>
-        </div>
-    </div>
-    <div class="row">
+    <div class="row" style="margin-top: 50px;">
         <div class="col-xs-12">
             <table class="table table-hover">
                 <thead>
@@ -42,8 +33,7 @@
                     <th>Czas przyjścia</th>
                     <th>Czas wyjścia</th>
                     <th>Łączna długość przerw</th>
-                    <th>Łączna długość pracy (bez przerw)</th>
-                    <th>Łączny czas pracy (wliczając przerwy)</th>
+                    <th>Łączny czas spędzony w pracy</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -51,12 +41,11 @@
                     <td>{{ log_dnia.dzien.0.czas_przyjscia }}</td>
                     <td>{% for logdn in log_dnia.dzien %}
                         {% if forloop.last %}
-                            {{ logdn.czas_wyjscia  | default_if_none:"Jeszcze nie wyszedłeś" }}
+                            {{ logdn.czas_wyjscia  | default_if_none:"Jeszcze jesteś w pracy" }}
                         {% endif %}
                     {% endfor %}
-                    <td>{{ user.pracownik.laczny_czas_przerw | default_if_none:"Nie masz jeszcze żadnej zakończonej przerwy" }}</td>
-                    <td>{{ user.pracownik.czas_pracy_bez_przerw }}</td>
-                    <td>{{ user.pracownik.laczny_czas_pracy }}</td>
+                    <td>{{ user.pracownik.t_laczny_czas_przerw_dzis | default_if_none:"Nie masz jeszcze żadnej zakończonej przerwy" }}</td>
+                    <td>{{ user.pracownik.t_laczny_czas_pracy_dzis }}</td>
                 </tr>
                 </tbody>
             </table>
@@ -66,51 +55,51 @@
     <div class="row">
         <div class="col-xs-4"></div>
         {# empty #}
+        <div class="col-xs-4" style="text-align: center;">
+            <h3>panel użytkownika</h3>
+        </div>
+
+        <div class="col-xs-12">
+            {% get_month_log user.pracownik %}
+        </div>
+
         {% if user.pracownik.is_kierownik %}
+            <div class="col-xs-4"></div>
+            {# empty #}
             <div class="col-xs-4" style="text-align: center;">
                 <h3>panel kierownika</h3>
                 <h4>podwładni:</h4>
             </div>
             <div class="col-xs-12">
                 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                    {%  for pracownik in user.pracownik.lista_pracownikow %}
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="heading{{pracownik.user.first_name}}">
-                            <h4 class="panel-title">
-                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{pracownik.user.first_name}}"
-                                   aria-expanded="true" aria-controls="collapse{{pracownik.user.first_name}}">
-                                    {{pracownik.user.first_name}}
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="collapse{{pracownik.user.first_name}}" class="panel-collapse collapse in" role="tabpanel"
-                             aria-labelledby="heading{{pracownik.user.first_name}}">
-                            <div class="panel-body">
-                                <table class="table table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>Data</th>
-                                        <th>Łączny czas pracy</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                    {% for pracownik in user.pracownik.lista_pracownikow %}
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="heading{{ pracownik.user.id }}">
+                                <h4 class="panel-title">
+                                    <div class="row">
+                                        <a class="collapsed" role="button" data-toggle="collapse"
+                                           data-parent="#accordion"
+                                           href="#collapse{{ pracownik.user.id }}"
+                                           aria-expanded="false"
+                                           aria-controls="collapse{{ pracownik.user.id }}">
+                                            <div class="col-xs-4">id: {{ pracownik.user.id }}</div>
+                                            <div class="col-xs-4">{{ pracownik.user.first_name }} {{ pracownik.user.last_name }}</div>
+                                            <div class="col-xs-4">stanowisko: {{ pracownik.stanowisko }}</div>
+                                        </a>
+                                    </div>
+                                </h4>
+                            </div>
+                            <div id="collapse{{ pracownik.user.id }}" class="panel-collapse collapse"
+                                 role="tabpanel"
+                                 aria-labelledby="heading{{ pracownik.user.id }}">
+                                {% get_month_log pracownik %}
                             </div>
                         </div>
-                    </div>
                     {% endfor %}
                 </div>
             </div>
         {% else %}
-            <div class="col-xs-4"><h3>panel użytkownika</h3></div>
-            <div class="col-xs-12">
-
-            </div>
+            <hr>
         {% endif %}
     </div>
 
