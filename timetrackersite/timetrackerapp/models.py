@@ -111,15 +111,6 @@ class Przerwa(models.Model):
         return 'Start przerwy o: ' + str(self.start_przerwy)
 
 
-class Urlop(models.Model):
-    start_urlopu = models.DateField(null=True, blank=True)
-    koniec_urlopu = models.DateField(null=True, blank=True)
-    typ_urlopu = models.CharField(max_length=30, null=False)
-
-    def __str__(self):
-        return 'Urlop typu ' + self.typ_urlopu
-
-
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         profile, created = Pracownik.objects.get_or_create(user=instance)

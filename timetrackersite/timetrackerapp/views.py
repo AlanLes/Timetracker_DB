@@ -5,7 +5,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic import ListView
 from django.views.generic import TemplateView
 import datetime
-from .models import Pracownik, CzasPracy, Przerwa, Urlop
+from .models import Pracownik, CzasPracy, Przerwa
 from django.http import HttpResponse
 
 from django.contrib.auth.mixins import LoginRequiredMixin

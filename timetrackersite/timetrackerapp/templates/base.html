@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <title>base</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
     <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
-<body style="padding-top: 60px;">
+<body style="padding-top: 60px; background-color: rgb(250, 250, 230)">
 <div class="container">
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
@@ -34,7 +35,10 @@
                             {{ user.first_name }} {{ user.last_name }} |
                             stanowisko: {{ user.pracownik.stanowisko }} |
                             status: <b>{{ user.pracownik.status }}</b> |
-                            <a href="{% url 'logout' %}">wyloguj</a></p></li>
+                            <a href="{% url 'logout' %}">
+                                wyloguj
+                                <i class="fa-fw fa fa-sign-out" aria-hidden="true"></i>
+                            </a></p></li>
                     {% endif %}
                 </ul>
 
