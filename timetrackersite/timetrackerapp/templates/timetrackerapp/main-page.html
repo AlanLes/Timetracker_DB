@@ -56,8 +56,8 @@
         {# PANEL UŻYTKOWNIKA #}
         <div class="col-xs-12">
             <div class="row" >
-                <div class="col-xs-4"></div>
-                <div class="col-xs-4">
+                <div class="col-xs-3"></div>
+                <div class="col-xs-6">
                     <div class="row" style="background-color: #FFFFFF; border: 1px solid #ddd; border-radius: 4px; ">
                         <div class="col-xs-12">
                             <div style="text-align: center;">
@@ -99,9 +99,10 @@
                                                    href="#collapse{{ pracownik.user.id }}"
                                                    aria-expanded="false"
                                                    aria-controls="collapse{{ pracownik.user.id }}">
-                                                    <div class="col-xs-4">id: {{ pracownik.user.id }}</div>
-                                                    <div class="col-xs-4">{{ pracownik.user.first_name }} {{ pracownik.user.last_name }}</div>
-                                                    <div class="col-xs-4">stanowisko: {{ pracownik.stanowisko }}</div>
+                                                    <div class="col-xs-3">id: {{ pracownik.user.id }}</div>
+                                                    <div class="col-xs-3">{{ pracownik.user.username }}</div>
+                                                    <div class="col-xs-3">{{ pracownik.user.first_name }} {{ pracownik.user.last_name }}</div>
+                                                    <div class="col-xs-3">stanowisko: {{ pracownik.stanowisko }}</div>
                                                 </a>
                                             </div>
                                         </h4>

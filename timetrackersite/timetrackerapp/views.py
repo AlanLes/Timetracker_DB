@@ -52,13 +52,13 @@ def start_work(request, **kwargs):
     # jesli przyszedles do pracy i nie wyszedles z pracy to nieok - sprawdzasz czy ostatni worklog zostal zakonczony
     if lastWorkTime:
         if not lastWorkTime.czas_wyjscia:
-            status = '{"status:" "nok"}'
+            status = 'Niestety nie jest to mozliwe. Spojrz na swoj status.'
             return HttpResponse(status)
 
     todayWorkTime = CzasPracy(czas_przyjscia=datetime.datetime.now(), pracownik=request.user.pracownik)
     todayWorkTime.save()
     print(todayWorkTime)
-    status = '{"status:" "ok"}'
+    status = 'Akcja wykonana!'
     return HttpResponse(status)
 
 
@@ -74,16 +74,16 @@ def start_break(request, **kwargs):
             if lastBreak:
                 # jesli nie ma konca ostatniej przerwy to nie mozna isc na przerwe lol
                 if not lastBreak.koniec_przerwy:
-                    status = '{"status:" "nok"}'
+                    status = 'Niestety nie jest to mozliwe. Spojrz na swoj status.'
                     return HttpResponse(status)
 
             todayAnotherBreak = Przerwa(start_przerwy=datetime.datetime.now(), pracownik=request.user.pracownik)
             todayAnotherBreak.save()
             print(todayAnotherBreak)
-            status = '{"status:" "ok"}'
+            status = 'Akcja wykonana!'
             return HttpResponse(status)
 
-    status = '{"status:" "nok"}'
+    status = 'Niestety nie jest to mozliwe. Spojrz na swoj status.'
     return HttpResponse(status)
 
 
@@ -96,10 +96,10 @@ def end_break(request, **kwargs):
         if not lastBreak.koniec_przerwy:
             lastBreak.koniec_przerwy = datetime.datetime.now()
             lastBreak.save()
-            status = '{"status:" "ok"}'
+            status = 'Akcja wykonana!'
             return HttpResponse(status)
 
-    status = '{"status:" "nok"}'
+    status = 'Niestety nie jest to mozliwe. Spojrz na swoj status.'
     return HttpResponse(status)
 
 
@@ -133,21 +133,21 @@ def end_work(request, **kwargs):
                     print(lastBreak.koniec_przerwy)
                     lastWorkTime.czas_wyjscia = datetime.datetime.now()
                     lastWorkTime.save()
-                    status = '{"status:" "ok"}'
+                    status = 'Akcja wykonana!'
                     return HttpResponse(status)
                 else:
                     # byl na przerwie  (chocby jakiejs kiedys!) i zakonczyl przerwe!
                     lastWorkTime.czas_wyjscia = datetime.datetime.now()
                     lastWorkTime.save()
-                    status = '{"status:" "ok"}'
+                    status = 'Akcja wykonana!'
                     return HttpResponse(status)
             else:
                 print("else")
                 # w takim wypadku oznacza to, ze nie byles dzisiaj na przerwie, ale to spoko, nic nie szkodzi
                 lastWorkTime.czas_wyjscia = datetime.datetime.now()
                 lastWorkTime.save()
-                status = '{"status:" "ok"}'
+                status = 'Akcja wykonana!'
                 return HttpResponse(status)
     print("not ok")
-    status = '{"status:" "nok"}'
+    status = 'Niestety nie jest to mozliwe. Spojrz na swoj status.'
     return HttpResponse(status)
