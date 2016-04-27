@@ -55,7 +55,7 @@
     <div class="row">
         {# PANEL UŻYTKOWNIKA #}
         <div class="col-xs-12">
-            <div class="row" >
+            <div class="row">
                 <div class="col-xs-3"></div>
                 <div class="col-xs-6">
                     <div class="row" style="background-color: #FFFFFF; border: 1px solid #ddd; border-radius: 4px; ">
@@ -64,10 +64,6 @@
                                 <h3><i class="fa fa-fw fa-user" aria-hidden="true"></i>PANEL UŻYTKOWNIKA</h3>
                             </div>
                             <div class="panel panel-default">
-                                <div class="panel-heading clearfix">
-                                    <h3 class="panel-title"><i class="fa-fw fa fa-table" aria-hidden="true"></i></i>
-                                        obecny miesiąc</h3>
-                                </div>
                                 {% get_month_log user.pracownik %}
                             </div>
                         </div>
@@ -110,7 +106,9 @@
                                     <div id="collapse{{ pracownik.user.id }}" class="panel-collapse collapse"
                                          role="tabpanel"
                                          aria-labelledby="heading{{ pracownik.user.id }}">
-                                        {% get_month_log pracownik %}
+                                        <div class="panel panel-default">
+                                            {% get_month_log pracownik %}
+                                        </div>
                                     </div>
                                 </div>
                             {% endfor %}
