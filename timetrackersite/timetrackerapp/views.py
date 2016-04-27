@@ -5,6 +5,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic import ListView
 from django.views.generic import TemplateView
 import datetime
+import calendar
 from .models import Pracownik, CzasPracy, Przerwa
 from django.http import HttpResponse
 
@@ -32,6 +33,29 @@ class MainPageView(LoginRequiredMixin, TemplateView):
         c["log_dnia"] = today
 
         return c
+
+class MonthLogView(LoginRequiredMixin, TemplateView):
+    template_name = "timetrackerapp/month-log-view.html"
+
+    def get_context_data(self, **kwargs):
+        month = self.kwargs['month']
+        year = self.kwargs['year']
+        pracownik = Pracownik.objects.get(id=self.kwargs['id_prac'])
+
+        context = super(MonthLogView, self).get_context_data(**kwargs)
+
+        month_log = []
+        now = datetime.datetime.now()
+        for i in range(calendar.monthrange(int(year), int(month))[1]):
+            data = datetime.date(int(year), int(month), i + 1)
+            poj_log_pracy = pracownik.t_laczny_czas_pracy(data)
+            poj_log_przerw = pracownik.t_laczny_czas_przerw(data)
+            if poj_log_pracy != '00:00:00':
+                month_log.append((str(data), poj_log_przerw, poj_log_pracy))
+
+        context['month_log'] = month_log
+        print(context)
+        return context
 
 
 class PracownikListView(LoginRequiredMixin, ListView):
