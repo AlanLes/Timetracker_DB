@@ -1,14 +1,14 @@
 <div class="panel-heading clearfix">
     <h3 class="panel-title">
-        <a href=""><i id="previous-month" class="fa-fw fa fa-long-arrow-left" aria-hidden="true"></i></a>
+        <a href=""><i id="previous-month-{{ user.id }}" class="fa-fw fa fa-long-arrow-left" aria-hidden="true"></i></a>
         |
         <i class="fa-fw fa fa-table" aria-hidden="true"></i>
         obecny miesiąc
         |
-        <a href=""><i id="next-month" class="fa-fw fa fa-long-arrow-right" aria-hidden="true"></i></a>
+        <a href=""><i id="next-month-{{ user.id }}" class="fa-fw fa fa-long-arrow-right" aria-hidden="true"></i></a>
     </h3>
 </div>
-<div id="tabelka">
+<div id="tabelka-{{ user.id }}">
 {#    <table class="table table-hover">#}
 {#        <thead>#}
 {#        <tr>#}
@@ -36,7 +36,7 @@
 <script type="text/javascript">
     var miesiac = 4;
     var rok = 2016;
-    var id_prac = 2;
+    var id_prac = {{ user.id }};
 
     var refresh = function (id_prac, rok, miesiac) {
         $('#tabelka').load('/timetrackerapp/log/'+ id_prac + '/'+ rok + '/' + miesiac);
