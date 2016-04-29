@@ -7,6 +7,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 import string, random
 from django import forms
+from django.core.mail import send_mail
+from django.conf import settings
 
 
 class MyUserChangeForm(UserChangeForm):
@@ -23,6 +25,8 @@ class MyUserChangeForm(UserChangeForm):
 
 class MyUserCreationForm(UserCreationForm):
     email = forms.EmailField(label="Email")
+    first_name = forms.CharField(label="Imie")
+    last_name = forms.CharField(label="Nazwisko")
 
     def __init__(self, *args, **kwargs):
         super(UserCreationForm, self).__init__(*args, **kwargs)
@@ -36,7 +40,9 @@ class MyUserCreationForm(UserCreationForm):
         user.set_password(self.cleaned_data["password1"])
         if commit:
             user.save()
-        #todo sending email!
+
+        send_mail('Password to TimetrackerApp', self.cleaned_data["password1"], 'TIMETRACKER-ADMINISTRATION',
+                  [settings.EMAIL_BACKEND], fail_silently=False)
         return user
 
 
@@ -47,7 +53,7 @@ class MyUserAdmin(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'email', 'password1', 'password2')}
+            'fields': ('username', 'email', 'first_name', 'last_name', 'password1', 'password2')}
          ),
     )
 

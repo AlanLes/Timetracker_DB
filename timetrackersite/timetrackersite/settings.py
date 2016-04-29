@@ -120,6 +120,8 @@ USE_TZ = False
 
 AUTH_PROFILE_MODULE = 'timetrackerapp.Pracownik'
 
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
