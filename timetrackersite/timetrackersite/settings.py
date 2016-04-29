@@ -121,7 +121,11 @@ USE_TZ = False
 AUTH_PROFILE_MODULE = 'timetrackerapp.Pracownik'
 
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'timetrackerpwr'
+EMAIL_HOST_PASSWORD = 'dbdb12345'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
