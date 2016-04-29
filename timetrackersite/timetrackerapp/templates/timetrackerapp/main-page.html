@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% load show_month_tags %}
+
+{% block content %}
+
+    <div class="row" style="text-align: center; margin-top: 50px;">
+        <div class="col-xs-3">
+            <button id="start-work-day" type="button" class="btn btn-info btn-lg" onClick="refreshPage()">
+                PRZYJŚCIE DO PRACY
+            </button>
+        </div>
+        <div class="col-xs-3">
+            <button id="start-break" type="button" class="btn btn-success btn-lg" onClick="refreshPage()">
+                PRZERWA START
+            </button>
+        </div>
+        <div class="col-xs-3">
+            <button id="end-break" type="button" class="btn btn-warning btn-lg" onClick="refreshPage()">
+                KONIEC PRZERWY
+            </button>
+        </div>
+        <div class="col-xs-3">
+            <button id="end-work-day" type="button" class="btn btn-danger btn-lg" onClick="refreshPage()">
+                KONIEC PRACY
+            </button>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 50px;">
+        <div class="col-xs-12">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Czas przyjścia</th>
+                    <th>Czas wyjścia</th>
+                    <th>Łączna długość przerw</th>
+                    <th>Łączny czas spędzony w pracy</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{ log_dnia.dzien.0.czas_przyjscia }}</td>
+                    <td>{% for logdn in log_dnia.dzien %}
+                        {% if forloop.last %}
+                            {{ logdn.czas_wyjscia  | default_if_none:"Jeszcze jesteś w pracy" }}
+                        {% endif %}
+                    {% endfor %}
+                    <td>{{ user.pracownik.t_laczny_czas_przerw_dzis | default_if_none:"Nie masz jeszcze żadnej zakończonej przerwy" }}</td>
+                    <td>{{ user.pracownik.t_laczny_czas_pracy_dzis }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        {# PANEL UŻYTKOWNIKA #}
+        <div class="col-xs-12">
+            <div class="row">
+                <div class="col-xs-3"></div>
+                <div class="col-xs-6">
+                    <div class="row" style="background-color: #FFFFFF; border: 1px solid #ddd; border-radius: 4px; ">
+                        <div class="col-xs-12">
+                            <div style="text-align: center;">
+                                <h3><i class="fa fa-fw fa-user" aria-hidden="true"></i>PANEL UŻYTKOWNIKA</h3>
+                            </div>
+                            <div class="panel panel-default">
+                                {% get_month_log user.pracownik %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# PANEL KIEROWNIKA #}
+        <div class="col-xs-12">
+            <div class="row"
+                 style="background-color: #FFFFFF; border: 1px solid #ddd; border-radius: 4px; margin-top: 20px;">
+                {% if user.pracownik.is_kierownik %}
+                    <div class="col-xs-4"></div>
+                    {# empty #}
+                    <div class="col-xs-4" style="text-align: center">
+                        <h3><i class="fa fa-fw fa-user-secret" aria-hidden="true"></i>PANEL KIEROWNIKA</h3>
+                        <h4>podwładni:</h4>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                            {% for pracownik in user.pracownik.lista_pracownikow %}
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="heading{{ pracownik.user.id }}">
+                                        <h4 class="panel-title">
+                                            <div class="row">
+                                                <a class="collapsed" role="button" data-toggle="collapse"
+                                                   data-parent="#accordion"
+                                                   href="#collapse{{ pracownik.user.id }}"
+                                                   aria-expanded="false"
+                                                   aria-controls="collapse{{ pracownik.user.id }}">
+                                                    <div class="col-xs-3">id: {{ pracownik.user.id }}</div>
+                                                    <div class="col-xs-3">{{ pracownik.user.username }}</div>
+                                                    <div class="col-xs-3">{{ pracownik.user.first_name }} {{ pracownik.user.last_name }}</div>
+                                                    <div class="col-xs-3">stanowisko: {{ pracownik.stanowisko }}</div>
+                                                </a>
+                                            </div>
+                                        </h4>
+                                    </div>
+                                    <div id="collapse{{ pracownik.user.id }}" class="panel-collapse collapse"
+                                         role="tabpanel"
+                                         aria-labelledby="heading{{ pracownik.user.id }}">
+                                        <div class="panel panel-default">
+                                            {% get_month_log pracownik %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% else %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#start-work-day').click(function () {
+                console.log("dziala");
+                var jqxhr = $.get("/timetrackerapp/start-work/", function (response) {
+                    alert(response);
+                });
+            });
+
+            $('#start-break').click(function () {
+                console.log("dziala");
+                var jqxhr = $.get("/timetrackerapp/start-break/", function (response) {
+                    alert(response);
+                });
+            });
+
+            $('#end-break').click(function () {
+                console.log("dziala");
+                var jqxhr = $.get("/timetrackerapp/end-break/", function (response) {
+                    alert(response);
+                });
+            });
+
+            $('#end-work-day').click(function () {
+                console.log("dziala");
+                var jqxhr = $.get("/timetrackerapp/end-work/", function (response) {
+                    alert(response);
+                });
+            });
+        });
+
+        function refreshPage() {
+            window.location.reload();
+        }
+
+    </script>
+
+{% endblock %}

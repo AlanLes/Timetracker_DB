@@ -14,10 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import include, url
-from django.contrib import admin
+from django.contrib import admin, auth
+from django.views.generic.base import RedirectView
 
 urlpatterns = [
     url(r'^timetrackerapp/', include('timetrackerapp.urls')),
     url(r'^admin/', admin.site.urls),
+    url(r'^accounts/logout/$', auth.views.logout, {'next_page': '/'}),
     url(r'^accounts/', include('django.contrib.auth.urls')),
+    url(r'^$', RedirectView.as_view(url="/timetrackerapp/", permanent=True), name='index'),
 ]

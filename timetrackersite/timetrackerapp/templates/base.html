@@ -2,13 +2,51 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>base</title>
+    <title>TIMETRACKERAPP</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
     <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
-<body>
-    {% block content %}{% endblock %}
+<body style="padding-top: 60px; background-color: rgb(250, 250, 230)">
+<div class="container">
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
 
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    {% if user.is_authenticated %}
+                        <li class="active"><a href="#">TIMETRACKERAPP</a></li>
+                    {% endif %}
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if user.is_authenticated %}
+                        <li><p class="text-muted" style="margin-top: 10px;"><i class="fa fa-fw fa-user"></i>
+                            <b>{{ user.username }}</b> |
+                            {{ user.first_name }} {{ user.last_name }} |
+                            stanowisko: {{ user.pracownik.stanowisko }} |
+                            status: <b>{{ user.pracownik.status }}</b> |
+                            <a href="{% url 'logout' %}">
+                                wyloguj
+                                <i class="fa-fw fa fa-sign-out" aria-hidden="true"></i>
+                            </a></p></li>
+                    {% endif %}
+                </ul>
+
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+    {% block content %}{% endblock %}
+</div>
 
 
 </body>
