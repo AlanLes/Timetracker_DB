@@ -52,7 +52,7 @@ def start_work(request, **kwargs):
     # jesli przyszedles do pracy i nie wyszedles z pracy to nieok - sprawdzasz czy ostatni worklog zostal zakonczony
     if lastWorkTime:
         if not lastWorkTime.czas_wyjscia:
-            status = 'Niestety nie jest to mozliwe. Spojrz na swoj status.'
+            status = 'Akcja niewykonalna. Skontroluj status.'
             return HttpResponse(status)
 
     todayWorkTime = CzasPracy(czas_przyjscia=datetime.datetime.now(), pracownik=request.user.pracownik)
@@ -74,7 +74,7 @@ def start_break(request, **kwargs):
             if lastBreak:
                 # jesli nie ma konca ostatniej przerwy to nie mozna isc na przerwe lol
                 if not lastBreak.koniec_przerwy:
-                    status = 'Niestety nie jest to mozliwe. Spojrz na swoj status.'
+                    status = 'Akcja niewykonalna. Skontroluj status.'
                     return HttpResponse(status)
 
             todayAnotherBreak = Przerwa(start_przerwy=datetime.datetime.now(), pracownik=request.user.pracownik)
@@ -83,7 +83,7 @@ def start_break(request, **kwargs):
             status = 'Akcja wykonana!'
             return HttpResponse(status)
 
-    status = 'Niestety nie jest to mozliwe. Spojrz na swoj status.'
+    status = 'Akcja niewykonalna. Skontroluj status.'
     return HttpResponse(status)
 
 
@@ -99,7 +99,7 @@ def end_break(request, **kwargs):
             status = 'Akcja wykonana!'
             return HttpResponse(status)
 
-    status = 'Niestety nie jest to mozliwe. Spojrz na swoj status.'
+    status = 'Akcja niewykonalna. Skontroluj status.'
     return HttpResponse(status)
 
 
@@ -149,5 +149,5 @@ def end_work(request, **kwargs):
                 status = 'Akcja wykonana!'
                 return HttpResponse(status)
     print("not ok")
-    status = 'Niestety nie jest to mozliwe. Spojrz na swoj status.'
+    status = 'Akcja niewykonalna. Skontroluj status.'
     return HttpResponse(status)
