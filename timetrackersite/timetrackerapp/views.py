@@ -1,7 +1,6 @@
 from django.shortcuts import render
 
 # Create your views here.
-from django.views.generic.detail import DetailView
 from django.views.generic import ListView
 from django.views.generic import TemplateView
 import datetime
@@ -40,10 +39,6 @@ class PracownikListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super(PracownikListView, self).get_context_data(**kwargs)
         return context
-
-
-class PracownikDetailView(LoginRequiredMixin, DetailView):
-    model = Pracownik
 
 
 def start_work(request, **kwargs):
