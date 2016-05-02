@@ -45,7 +45,8 @@ class MyUserCreationForm(UserCreationForm):
         #           [settings.EMAIL_BACKEND], fail_silently=False)
         send_mail('Password to TimetrackerApp',
                   ('Twoje dane logowania do TimetrackerApp\n'+'Nazwa uzytkownika: '
-                   + self.cleaned_data["username"] + '\nHaslo: ' + self.cleaned_data["password1"]),
+                   + self.cleaned_data["username"] + '\nHaslo: ' + self.cleaned_data["password1"]
+                   + '\n\nAdres strony: django-env.hnr7pfebkm.us-west-2.elasticbeanstalk.com'),
                   settings.EMAIL_HOST_USER,
                   [self.cleaned_data["email"]], fail_silently=False)
         return user
