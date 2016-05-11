@@ -16,6 +16,9 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin, auth
 from django.views.generic.base import RedirectView
+# to static:
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^timetrackerapp/', include('timetrackerapp.urls')),
@@ -23,4 +26,4 @@ urlpatterns = [
     url(r'^accounts/logout/$', auth.views.logout, {'next_page': '/'}),
     url(r'^accounts/', include('django.contrib.auth.urls')),
     url(r'^$', RedirectView.as_view(url="/timetrackerapp/", permanent=True), name='index'),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
