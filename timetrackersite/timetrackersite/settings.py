@@ -24,6 +24,7 @@ SECRET_KEY = 'zol%j)3omkjuibvrag=v5u+q@&w)s1ja*8)b+t1@$_$kv7%65i'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # before 'eb deploy' turn DEBUG to False
+#TODO: eb deploy
 DEBUG = True
 
 ALLOWED_HOSTS = ['']
